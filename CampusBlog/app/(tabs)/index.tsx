@@ -5,7 +5,9 @@ export default function App() {
   return (
   <View>
   <Text>  Welcome to CampusBlog</Text>
-  <Link href={"/about"}>go to About</Link>
+  <Link href={"/about"}>About</Link>
+  <Link href={"/login"}>Login</Link>
+  <Link href={"/login"}>Post</Link>
   </View>
   );
   }
