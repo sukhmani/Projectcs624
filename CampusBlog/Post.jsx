@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-export default function PostCard({ date, title }) {
+export default function Post({ date, title, content }) {
   return (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
@@ -11,7 +11,7 @@ export default function PostCard({ date, title }) {
       
       <View style={styles.cardContent}>
         <Text style={styles.bodyText} numberOfLines={1}>
-          I'm looking for a study buddy for the upcoming exam. If you're interested, please reach out!
+          {content}
         </Text>
       </View>
     </View>
