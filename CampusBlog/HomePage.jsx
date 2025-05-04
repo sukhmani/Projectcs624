@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react'
-import { Text, View } from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 import Header from './Header'
 import Post from './Post'
+import { useNavigation } from '@react-navigation/native'
+
 
 
 function HomePage() {
     const [postList, setPostList] = React.useState([])
+    const navigation = useNavigation(); 
     useEffect(()=>{
         setPostList([
             {date: '2023-10-01', title: 'Study Buddy Needed', content: 'Looking for someone to study with for the upcoming exam.'},
@@ -17,9 +20,14 @@ function HomePage() {
   return (
     <View>
         <Header/>
-        <Text>Homepage</Text>
+        
+        
         {postList.map((post, index) => (
+            <TouchableOpacity
+             key={index} onPress={() => navigation.navigate('PostDetail', { post })}>
             <Post key={index} date={post.date} title={post.title} content={post.content} />
+            </TouchableOpacity>
+
         ))}
     </View>
   )
