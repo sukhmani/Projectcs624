@@ -19,9 +19,7 @@ function HomePage() {
     
   return (
     <View>
-        <Header/>
-        
-        
+        {/* <Header/> */}
         {postList.map((post, index) => (
             <TouchableOpacity
              key={index} onPress={() => navigation.navigate('PostDetail', { post })}>

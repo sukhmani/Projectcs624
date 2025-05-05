@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 const pages = [
-  { label: 'Home', route: 'Homepage' },
+  { label: 'Homes', route: 'HomePage' },
   { label: 'Create Post', route: 'CreatePost' },
   { label: 'Your Post', route: 'YourPost' },
   { label: 'Sign Out', route: 'SignOut' },
@@ -20,6 +20,7 @@ const Header = () => {
 
   const handleNavigate = (route) => {
     setMenuVisible(false);
+    console.log("route ", route)
     navigation.navigate(route);
   };
 
