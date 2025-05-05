@@ -1,8 +1,8 @@
-import HomePage from '../../HomePage';
+import App from '../App';
 
 
 export default function Homescreen() {
   return (
-    <HomePage/>
+    <App/>
   );
 }
