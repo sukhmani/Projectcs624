@@ -1,14 +1,20 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export function PostDetail({ route }) {
   const { post } = route.params; 
+  const navigation = useNavigation(); 
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <Icon name="arrow-back" size={50} color="#000" />
+      </TouchableOpacity>
       <Text style={styles.title}>{post.title}</Text>
       <Text style={styles.date}>{post.date}</Text>
       <Text style={styles.content}>{post.content}</Text>
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
@@ -17,6 +23,9 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#fff',
   },
+  backButton: {
+    marginBottom: 10,
+    },
   title: {
     fontSize: 24,
     fontWeight: 'bold',

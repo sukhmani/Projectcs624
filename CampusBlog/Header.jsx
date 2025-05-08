@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 const pages = [
-  { label: 'Homes', route: 'HomePage' },
+  { label: 'Home', route: 'HomePage' },
   { label: 'Create Post', route: 'CreatePost' },
   { label: 'Your Post', route: 'YourPost' },
   { label: 'Sign Out', route: 'SignOut' },
@@ -30,7 +30,9 @@ const Header = () => {
         <TouchableOpacity onPress={handleToggleMenu}>
           <Ionicons name="menu" size={40} color="white" />
         </TouchableOpacity>
-        <Text style={styles.title}>CityU BLOG</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('HomePage')}>
+          <Text style={styles.title}>CityU BLOG</Text>
+        </TouchableOpacity>
       </View>
 
       <Modal
