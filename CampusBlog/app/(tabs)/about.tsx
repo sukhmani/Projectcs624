@@ -1,9 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 export default function AboutScreen() {
 return (
+  <ScrollView contentContainerStyle={styles.container}>
 <View style={styles.container}>
 <Text> About the app</Text>
 This project has been implemented and designed by using the MERN stack including React Native framework, Express, Node, MongoDB. The main purpose of this mobile app is to provide a social platform where users can interact with other students through features offered in the application. The application will include authentication, post creation, and real-time interactions. The target users are students who are currently studying or have previously studied at City University of Seattle. This project demonstrates how we apply and practice the knowledge gained in this course to build a mobile application.
@@ -21,6 +23,7 @@ This project has been implemented and designed by using the MERN stack including
 </Image>
 <Text>Yen Hai Tran</Text>
 </View>
+</ScrollView>
 );
 }
 
@@ -35,5 +38,6 @@ container: {
     width: 200,
     height: 200,
     resizeMode: 'contain',
+   
   },
 });
