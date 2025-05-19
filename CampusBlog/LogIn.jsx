@@ -5,14 +5,13 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Image,
   Dimensions,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const { width } = Dimensions.get('window');
 
-export default function LogIn() {
+export default function LogIn({ navigation }) {
   return (
     <View style={styles.container}>
       
@@ -50,9 +49,15 @@ export default function LogIn() {
             colors={['#FF6DB0', '#FF90B3']}
             style={styles.gradientButton}
           >
-            <Text style={styles.buttonText}>Sign up</Text>
+            <Text style={styles.buttonText}>Log in</Text>
           </LinearGradient>
         </TouchableOpacity>
+        <View style={styles.switchContainer}>
+          <Text style={styles.switchText}>Don't have an account? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+            <Text style={styles.switchLink}>Sign up</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -122,5 +127,19 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+  switchContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 18,
+  },
+  switchText: {
+    color: '#888',
+    fontSize: 15,
+  },
+  switchLink: {
+    color: '#FF6DB0',
+    fontWeight: 'bold',
+    fontSize: 15,
   },
 });

@@ -8,6 +8,7 @@ import YourPost from './YourPost';
 import SignOut from './SignOut';
 import { PostDetail } from './PostDetail';
 import LogIn from './LogIn';
+import SignUp from './SignUp';
 
 const Stack = createStackNavigator();
 
@@ -27,6 +28,7 @@ export default function App() {
       <Stack.Screen name="SignOut" component={SignOut} />
       <Stack.Screen name="PostDetail" component={PostDetail} />
       <Stack.Screen name="LogIn" component={LogIn} />
+      <Stack.Screen name="SignUp" component={SignUp} />
     </Stack.Navigator>
     </NavigationIndependentTree>
   );
