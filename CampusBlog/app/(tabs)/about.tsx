@@ -10,12 +10,16 @@ This project has been implemented and designed by using the MERN stack including
 <Image source={require('../(tabs)/user.png')} style={styles.image}>
 
 </Image>
+<Text>Sai Mani Ritish Upadhyayula</Text>
+<Text>Sai is a City University Student</Text>
 <Image source={require('../(tabs)/Sukhmani.png')} style={styles.image}>
 
 </Image>
+<Text>Sukhmani Thukral</Text>
 <Image source={require('../(tabs)/Yen.png')} style={styles.image}>
 
 </Image>
+<Text>Yen Hai Tran</Text>
 </View>
 );
 }
@@ -24,7 +28,7 @@ const styles = StyleSheet.create({
 container: {
 	flex: 1,
 	backgroundColor: '#fff',
-	alignItems: 'center',
+	alignItems: 'flex-start',
 	justifyContent: 'center',
 },
  image: {
