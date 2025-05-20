@@ -18,7 +18,7 @@ export default function AboutScreen() {
       <Text style={styles.subheading}>Meet the Team</Text>
 
       <View style={styles.member}>
-        <Image source={require('../(tabs)/user.png')} style={styles.image} />
+        <Image source={require('../(tabs)/Ritish.png')} style={styles.image} />
         <Text style={styles.name}>Sai Mani Ritish Upadhyayula</Text>
         <Text style={styles.role}>City University Student</Text>
       </View>
