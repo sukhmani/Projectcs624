@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-export default function Post({ date, title, content }) {
+export default function Post({ date, title, content, author }) {
   return (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.subheader}>{date}</Text>
+        <Text style={styles.subheader}>{author} - {date}</Text>
       </View>
       
       <View style={styles.cardContent}>

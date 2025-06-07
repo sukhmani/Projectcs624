@@ -3,12 +3,13 @@ import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const pages = [
   { label: 'Home', route: 'HomePage' },
   { label: 'Create Post', route: 'CreatePost' },
   { label: 'Your Post', route: 'YourPost' },
-  { label: 'Sign Out', route: 'SignOut' },
+  { label: 'About Us', route: 'About' },
 ];
 
 const Header = () => {
@@ -23,7 +24,14 @@ const Header = () => {
     setMenuVisible(false);
     navigation.navigate(route);
   };
+   const handleSignOut = async () => {
+    await AsyncStorage.removeItem('userToken'); // remove the token
 
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'LogIn' }],
+    });
+  };
   return (
     <LinearGradient
       colors={['#FF6DB0', '#FF90B3']}
@@ -58,6 +66,12 @@ const Header = () => {
                 <Text style={styles.dropdownText}>{page.label}</Text>
               </TouchableOpacity>
             ))}
+            <TouchableOpacity
+                key={"SignOut"}
+                onPress={() => handleSignOut()}
+              >
+                <Text style={styles.dropdownText}>Sign out</Text>
+              </TouchableOpacity>
           </View>
         </TouchableOpacity>
       </Modal>
