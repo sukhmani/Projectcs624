@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, TextInput, StyleSheet, Alert, ActivityIndicator, Platform } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Alert, ActivityIndicator, Platform } from 'react-native';
 import Header from '../Header';
 import config from '../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 export default function YourPost() {
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  const [editingPost, setEditingPost] = useState(null);
-  const [newTitle, setNewTitle] = useState('');
-  const [newContent, setNewContent] = useState('');
+  const navigation = useNavigation();
 
   const fetchMyPosts = async () => {
     try {
@@ -89,58 +88,28 @@ export default function YourPost() {
     }
   };
 
-  const startEditing = (post) => {
-    setEditingPost(post);
-    setNewTitle(post.title);
-    setNewContent(post.content);
-  };
-
-  const saveEdit = () => {
-    const updatedPosts = posts.map(post => 
-      post.id === editingPost.id ? { ...post, title: newTitle, content: newContent } : post
-    );
-    setPosts(updatedPosts);
-    setEditingPost(null);
-    setNewTitle('');
-    setNewContent('');
-  };
-
   const renderItem = ({ item }) => (
     <View style={styles.postCard}>
-      {editingPost && editingPost.id === item.id ? (
-        <View>
-          <TextInput
-            value={newTitle}
-            onChangeText={setNewTitle}
-            style={styles.input}
-            placeholder="Edit Title"
-          />
-          <TextInput
-            value={newContent}
-            onChangeText={setNewContent}
-            style={styles.input}
-            placeholder="Edit Content"
-          />
-          <TouchableOpacity onPress={saveEdit} style={styles.saveButton}>
-            <Text style={styles.saveText}>Save</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <View>
-          <Text style={styles.title}>{item.title}</Text>
-          <View style={styles.contentContainer}>
-            <Text style={styles.content}>{item.content.slice(0, 100)}{item.content.length > 100 ? '...' : ''}</Text>
-            <View style={styles.buttonsContainer}>
-              <TouchableOpacity onPress={() => startEditing(item)} style={styles.editButton}>
-                <Text style={styles.editText}>Edit</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => deletePost(item._id)} style={styles.deleteButton}>
-                <Text style={styles.deleteText}>Delete</Text>
-              </TouchableOpacity>
-            </View>
+      <View>
+        <Text style={styles.title}>{item.title}</Text>
+        <View style={styles.contentContainer}>
+          <Text style={styles.content}>{item.content.slice(0, 100)}{item.content.length > 100 ? '...' : ''}</Text>
+          <View style={styles.buttonsContainer}>
+            <TouchableOpacity 
+              onPress={() => navigation.navigate('CreatePost', { post: item, isEditing: true })} 
+              style={styles.editButton}
+            >
+              <Text style={styles.editText}>Edit</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              onPress={() => deletePost(item._id)} 
+              style={styles.deleteButton}
+            >
+              <Text style={styles.deleteText}>Delete</Text>
+            </TouchableOpacity>
           </View>
         </View>
-      )}
+      </View>
     </View>
   );
 

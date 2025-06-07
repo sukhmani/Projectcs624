@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import config from '../config';
 import { View, Text, TextInput, StyleSheet, TouchableHighlight, ActivityIndicator } from 'react-native';
 import Header from '../Header';
@@ -6,33 +6,50 @@ import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
-export default function CreatePost() {
+// This component will be used for both creating and editing posts
+// The difference is determined if the isEditing prop is passed from the navigation route
+export default function CreatePost({ route }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
+  
+  // Get post data if we're editing
+  const isEditing = route.params?.isEditing || false;
+  const existingPost = route.params?.post;
 
-  const handleCreatePost = async () => {
+  // Populate the text inputs if we are in editing mode
+  useEffect(() => {
+    if (isEditing && existingPost) {
+      setTitle(existingPost.title);
+      setContent(existingPost.content);
+    }
+  }, [isEditing, existingPost]);
+
+  const handleSubmit = async () => {
     setError('');
-    // Validate inputs
     if (!title.trim() || !content.trim()) {
       setError('All fields are required');
       return;
     }
+
     setIsLoading(true);
     try {
-      // Get token from storage
       const token = await AsyncStorage.getItem('userToken');
       if (!token) {
-        setError('Please login to create a post');
+        setError('Please login to continue');
         setIsLoading(false);
         return;
       }
+      // If editing, we will have to add post id to the endpoint url
+      const url = isEditing 
+        ? `${config.API_URL}/posts/${existingPost._id}`
+        : `${config.API_URL}/posts`;
 
-      // Make API call
-      const response = await fetch(`${config.API_URL}/posts`, {
-        method: 'POST',
+      // If editing, we will use PUT method, for create we will use POST
+      const response = await fetch(url, {
+        method: isEditing ? 'PUT' : 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
@@ -46,72 +63,71 @@ export default function CreatePost() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to create post');
+        throw new Error(data.message || `Failed to ${isEditing ? 'update' : 'create'} post`);
       }
 
       // Reset form and navigate back
       setTitle('');
       setContent('');
-      navigation.navigate('YourPost');// Redirect to your post screen
+      navigation.navigate('YourPost');
 
     } catch (err) {
-      setError(err.message || 'Failed to create post');
+      setError(err.message || `Failed to ${isEditing ? 'update' : 'create'} post`);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-      <View style={styles.container}>
-        <Header/>
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Title</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter title"
-            value={title}
-            onChangeText={setTitle}
-          />
-        </View>
+    <View style={styles.container}>
+      <Header/>
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Title</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter title"
+          value={title}
+          onChangeText={setTitle}
+        />
+      </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Details of the post</Text>
-          <TextInput
-            style={[styles.input, styles.text]}
-            multiline
-            numberOfLines={4}
-            placeholder="Enter details"
-            value={content}
-            onChangeText={setContent}
-          />
-        </View> 
-        {error ? (
-          <Text style={styles.errorText}>{error}</Text>
-        ) : null}
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Details of the post</Text>
+        <TextInput
+          style={[styles.input, styles.textArea]}
+          multiline
+          numberOfLines={4}
+          placeholder="Enter details"
+          value={content}
+          onChangeText={setContent}
+        />
+      </View>
 
-        <TouchableHighlight 
-          onPress={handleCreatePost}
-          disabled={isLoading}
+      {error ? (
+        <Text style={styles.errorText}>{error}</Text>
+      ) : null}
+
+      <TouchableHighlight 
+        onPress={handleSubmit}
+        disabled={isLoading}
+      >
+        <LinearGradient 
+          colors={['#FF6DB0', '#FF90B3']} 
+          style={[
+            styles.gradientButton,
+            isLoading && styles.disabledButton
+          ]}
         >
-           <LinearGradient 
-             colors={['#FF6DB0', '#FF90B3']} 
-             style={[
-               styles.gradientButton,
-               isLoading && styles.disabledButton
-             ]}
-           >
-              {isLoading ? (
-                <ActivityIndicator color="#fff" />
-              ) : (
-                <Text style={styles.buttonText}>
-                  CREATE
-                </Text>
-              )}
-            </LinearGradient>
-        </TouchableHighlight>
-
-      
-     </View>
+          {isLoading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>
+              {isEditing ? 'UPDATE' : 'CREATE'}
+            </Text>
+          )}
+        </LinearGradient>
+      </TouchableHighlight>
+    </View>
   );
 }
 
@@ -146,8 +162,8 @@ const styles = StyleSheet.create({
     width: '90%',
     paddingLeft: 30,
   },
-  text: {
-    height: 100,
+  textArea: {
+    height: 300,
     textAlignVertical: 'top'
   },
   button: {
