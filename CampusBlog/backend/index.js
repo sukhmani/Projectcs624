@@ -19,7 +19,7 @@ db.once("open", () => console.log("Connected to MongoDB"));
 // API route to fetch data
 app.get("/data", async (req, res) => {
   try {
-    const items = await ItemModel.find(); // Replace with your actual schema model
+    const items = await ItemModel.find(); 
     res.json(items);
   } catch (error) {
     res.status(500).json({ error: error.message });
